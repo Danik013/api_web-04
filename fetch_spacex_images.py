@@ -32,11 +32,14 @@ def get_photo_spasex(api_spacex, user_input):
 
 def main():
     api_spacex = "https://api.spacexdata.com/v5/launches"
+
     parser = argparse.ArgumentParser()
     parser.add_argument ('id', nargs='?')
     urlspace = parser.parse_args()
     user_input = urlspace.id
+
     os.makedirs("imajes", exist_ok=True)
+    
     get_photo_spasex(api_spacex, user_input)
     
 

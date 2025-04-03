@@ -38,6 +38,7 @@ def main():
     else:
         api_nasa_epic = f"https://api.nasa.gov/EPIC/api/natural/date/{user_input}"
     os.makedirs("imajes", exist_ok=True)
+    
     get_nasa_epic(api_nasa_epic, token)
     
 
