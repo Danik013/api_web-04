@@ -29,7 +29,7 @@ def main():
     urlspace = parser.parse_args()
     image_name = urlspace.image_name
     if image_name is None:
-        image_name = ""
+        image_name = "not_image_name"
         
     bot = telegram.Bot(token=token)
 
