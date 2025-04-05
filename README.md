@@ -6,6 +6,7 @@
 3. [**`fetch_spacex_images.py`**](fetch_spacex_images.py) - Загружаем фотографии запуска **SpaseX**
 4. [**`get_one_photo_of_space_bot.py`**](get_one_photo_of_space_bot.py) - Бот отправляет фото выбранное по названию. Если не нашел, отправляет случайное фото из папки.
 5. [**`get_photos_of_space_bot.py`**](get_photos_of_space_bot.py) - Бот отправляет все фото из папки по порядку в бесконечном цикле по таймингу.
+6. [**`utils_functions.py`**](utils_functions.py) - Набор служебных функций, испозьзуемых скриптами.
 
 ## Как установить 
 
