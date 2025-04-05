@@ -5,27 +5,23 @@ import time
 from dotenv import load_dotenv
 import sys
 import argparse
+from utils_functions import getting_file_path
 
 
-def take_files():
-    files_path = []
-    directory = "imajes"
-    files_in_dir = os.listdir(directory)
-    for files_in_dirs in files_in_dir:
-        file = os.path.join(directory, files_in_dirs)
-        files_path.append(file)
-    return files_path
+DEFAULT_TIMING = 4
 
 
-def sending_photos(chat_id, publication_timing, bot):
-    files_path = take_files()
+def publishing_content(chat_id, publication_timing, bot):
+    file_paths = getting_file_path()
     while True:
-        for file_path in files_path:
-            bot.send_document(chat_id=chat_id, document=open(file_path, "rb"))
+        for file_path in file_paths:
+            with open(file_path, "rb") as file:
+                bot.send_document(chat_id=chat_id, document=file)
             time.sleep(publication_timing)
-        random.shuffle(files_path)
-        for file_path in files_path:
-            bot.send_document(chat_id=chat_id, document=open(file_path, "rb"))
+        random.shuffle(file_paths)
+        for file_path in file_paths:
+            with open(file_path, "rb") as file:
+                bot.send_document(chat_id=chat_id, document=file)
             time.sleep(publication_timing)
 
 
@@ -35,18 +31,14 @@ def main():
     chat_id = os.environ["TG_CHAT_ID"]
 
     parser = argparse.ArgumentParser()
-    parser.add_argument ('hours', nargs='?')
+    parser.add_argument("hours", nargs="?")
     urlspace = parser.parse_args()
-    user_input = urlspace.hours
-
-    if user_input is None:
-        publication_timing = 4*3600
-    else:
-        publication_timing = user_input*3600
+    hours = urlspace.hours or DEFAULT_TIMING
+    publication_timing = hours*3600
 
     bot = telegram.Bot(token=token)
 
-    sending_photos(chat_id, publication_timing, bot)
+    publishing_content(chat_id, publication_timing, bot)
 
 
 if __name__ == '__main__':
