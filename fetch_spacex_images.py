@@ -6,21 +6,12 @@ import argparse
 from utils_functions import get_file_extension, download_image
 
 
-def fetch_spasex_images_links(spasex_api_url, launch_id):
+def fetch_spasex_images_links(spasex_api_url):
     response = requests.get(spasex_api_url)
     response.raise_for_status()
-    launches = response.json()
-    if launch_id:
-        for launch_elements in launches:
-            if launch_elements["id"] == launch_id:
-                images_links = launch_elements["links"]["flickr"]["original"]
-                break
-            else:
-                images_links = []
-    else:
-        images_links = launches[0]["links"]["flickr"]["original"]
-        return images_links
-
+    launch = response.json()
+    images_links = launch["links"]["flickr"]["original"]
+    
     for index, url in enumerate(images_links, start=1):
         extension = get_file_extension(url)
         filename = f"spasex_{index}{extension}"
@@ -29,16 +20,18 @@ def fetch_spasex_images_links(spasex_api_url, launch_id):
 
 
 def main():
-    spasex_api_url = "https://api.spacexdata.com/v5/launches"
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument ('id', nargs='?')
-    urlspace = parser.parse_args()
-    launch_id = urlspace.id
+    parser = argparse.ArgumentParser(description="""
+        Загружаем фотографии запуска SpaseX. 
+        По умолчанию - последний запуск.
+    """)
+    parser.add_argument ('id', nargs='?', default="latest", help="Можно ввести id запуска.")
+    args = parser.parse_args()
+    launch_id = args.id
+    spasex_api_url = f"https://api.spacexdata.com/v5/launches/{launch_id}"
 
     os.makedirs("images", exist_ok=True)
     
-    fetch_spasex_images_links(spasex_api_url, launch_id)
+    fetch_spasex_images_links(spasex_api_url)
         
 
 if __name__ == '__main__':

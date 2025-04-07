@@ -18,7 +18,7 @@ def get_file_extension(url):
     return file_extension
 
 
-def getting_file_path():
+def get_file_paths():
     file_paths = []
     directory = "images"
     files_in_dir = os.listdir(directory)
