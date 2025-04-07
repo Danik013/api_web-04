@@ -4,6 +4,7 @@ from urllib.parse import urlparse
 from dotenv import load_dotenv
 import sys
 import argparse
+from contextlib import suppress
 from utils_functions import get_file_extension, download_image
 
 
@@ -13,11 +14,9 @@ def fetch_nasa_apod_links(apod_payload):
     response.raise_for_status()
 
     apod_links = []
-    try:
+    with suppress(KeyError):
         for nasa_apod in response.json():
             apod_links.append(nasa_apod["url"])
-    except KeyError:
-        pass
     return apod_links
  
      

@@ -17,7 +17,7 @@ def fetch_nasa_epic_links(token):
         date = datetime.strptime(photo_elements["date"], "%Y-%m-%d %H:%M:%S")
         base_url = "https://api.nasa.gov/EPIC/archive/natural"
         photo_elements_payload = {"api_key": token}
-        photo_elements_response = requests.get(f"{base_url}/{date.strftime('%Y/%m/%d')}/png/{image_id}.png", params=photo_elements_payload)
+        photo_elements_response = requests.post(f"{base_url}/{date.strftime('%Y/%m/%d')}/png/{image_id}.png", params=photo_elements_payload)
         photo_links.append(photo_elements_response.url)
 
     for index, url in enumerate(photo_links, start=1):

@@ -8,10 +8,8 @@ import argparse
 from utils_functions import get_file_paths
 
 
-def publishes_image(chat_id, image_name, bot, file_paths):
-    matched_files = [file_path for file_path in file_paths if image_name in os.path.basename(file_path)]
-    file_to_send = matched_files[0] if matched_files else random.choice(file_paths)
-    with open(file_to_send, "rb") as file:
+def publish_image(chat_id, bot, file_path_for_send):
+    with open(file_path_for_send, "rb") as file:
         bot.send_document(chat_id=chat_id, document=file)
     
 
@@ -29,10 +27,17 @@ def main():
     image_name = args.image_name
 
     file_paths = get_file_paths()
+
+    for path in file_paths:
+        if image_name in path:
+            file_path_for_send = path
+            break
+    else:
+        file_path_for_send = random.choice(file_paths)
             
     bot = telegram.Bot(token=token)
 
-    publishes_image(chat_id, image_name, bot, file_paths)
+    publish_image(chat_id, bot, file_path_for_send)
 
 
 if __name__ == '__main__':
