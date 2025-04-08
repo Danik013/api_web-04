@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 from dotenv import load_dotenv
 from utils_functions import download_image
+from urllib.parse import urlencode
 
 
 def fetch_nasa_epic_links(token):
@@ -17,8 +18,8 @@ def fetch_nasa_epic_links(token):
         date = datetime.strptime(photo_elements["date"], "%Y-%m-%d %H:%M:%S")
         base_url = "https://api.nasa.gov/EPIC/archive/natural"
         photo_elements_payload = {"api_key": token}
-        photo_elements_response = requests.post(f"{base_url}/{date.strftime('%Y/%m/%d')}/png/{image_id}.png", params=photo_elements_payload)
-        photo_links.append(photo_elements_response.url)
+        photo_elements_url = f"{base_url}/{date.strftime('%Y/%m/%d')}/png/{image_id}.png?{urlencode(photo_elements_payload)}"
+        photo_links.append(photo_elements_url)
 
     for index, url in enumerate(photo_links, start=1):
         filename = f"nasa_epic_{index}.png"
