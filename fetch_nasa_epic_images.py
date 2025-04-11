@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 from dotenv import load_dotenv
 from urllib.parse import urlencode
+from utils_functions import download_image
 
 
 def fetch_nasa_epic_links(token):
@@ -23,14 +24,6 @@ def fetch_nasa_epic_links(token):
         filename = f"nasa_epic_{index}.png"
         file_path = os.path.join("images", filename)
         download_image(url, file_path, epic_payload)
-
-
-def download_image(url, file_path, epic_payload):
-    response = requests.get(url, params=epic_payload)
-    response.raise_for_status()
-    with open(file_path, "wb") as file:
-        file.write(response.content)
-    return
 
 
 def main():

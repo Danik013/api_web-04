@@ -3,8 +3,10 @@ import os
 from urllib.parse import urlparse
 
 
-def download_image(url, file_path):
-    response = requests.get(url)
+def download_image(url, file_path, payload=None):
+    if payload is None:
+        payload = {}
+    response = requests.get(url, params=payload)
     response.raise_for_status()
     with open(file_path, "wb") as file:
         file.write(response.content)
